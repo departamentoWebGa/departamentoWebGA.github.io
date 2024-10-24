@@ -4,6 +4,7 @@
 2. [HTML](#html)
    1. [index.html](#indexhtml)
    2. [Carpeta departament](#carpeta-departament)
+      - [delivery.html](#deliveryhtml)
       - [web.html](#webhtml)
 3. [Assets](#assets)
    1. [JavaScript](#javascript)
@@ -32,6 +33,10 @@ Este será el archivo HTML principal, donde, a través de funciones, añadiremos
 
 En esta carpeta, guardaremos los archivos HTML de los departamentos que contienen esos componentes.
 
+#### delivery.html
+
+En este archivo, almacenaremos los componentes del departamento de Delivery.
+
 #### web.html
 
 En este archivo, almacenaremos los componentes del departamento de Web.
@@ -42,7 +47,29 @@ En este archivo, almacenaremos los componentes del departamento de Web.
 
 #### main.js
 
-Dentro de main.js encontramos diferentes tipos de funciones:
+En este archivo, tenemos una función llamada `departamentSelection()`. Esta función se ejecutará cuando escojamos un departamento con el `select[name=departament]`.
+
+Dentro de esa función, habrá un if que, cuando tenga un valor, realizará un switch/case.
+
+En cada caso, haremos diferentes llamadas de funciones:
+ - `clear()`
+ - `chooseDepartament(nombre_archivo, id_div)`
+
+La primera `clear()` elimina el contenido del div con clase content.
+
+Después, con la función `chooseDepartament()`, cargaremos el contenido de una página HTML y lo añadiremos a un div con el ID especificado. A esta función le pasaremos dos parámetros:
+- `pageName`: El nombre de la página HTML a cargar (por ejemplo, 'web.html' o 'delivery.html').
+- `divId`: El ID del div donde se añadirá el contenido.
+
+Lo primero que hará esta función es crear un div con un ID que se lo dará el segundo parámetro. Ese div lo crearemos dentro del div con clase content.
+
+Después, con un fetch, traeremos el contenido del archivo que deseamos visualizar y lo insertaremos en el div que hemos creado anteriormente. La ruta la crearemos con 'departament/' y el segundo parámetro (departament/pageName).
+
+Dentro de main.js también tenemos otras funciones:
+
+##### Recargar Select
+
+Con este código, conseguiremos que cada vez que se recargue la página, el select de departamento vuelva a su posición original.
 
 ##### Escoger Opción a Previsualizar
 
