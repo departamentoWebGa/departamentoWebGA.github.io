@@ -1,3 +1,9 @@
+/*!
+ * Copyright (c) 2025 Global Alumni
+ * Este software se distribuye bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
+ */
+
+
 /**
  * @function departamentSelection() recoge el valor del select con name departament y llamara 
  * a la @function clear() y dependiendo del valor llamara a la @function departamentWeb() o a la
@@ -119,10 +125,15 @@ function downloadStyle() {
     var codga = selectedOption.getAttribute('data-codga');
 
     if (idUniversity) {
+        /**
+         * Si el @id es #download_css
+        */
         var cssLink = document.querySelector('#download_css');
         cssLink.download = `style-general-${idUniversity}.css`;
         cssLink.href = document.querySelector('link[data-style="general"]').href;
-
+        /**
+         * Si el @id es #download_fonts
+        */
         var fontsLink = document.querySelector('#download_fonts');
         fontsLink.href = `/assets/fonts/${codga}.zip`;
     } else {

@@ -6,6 +6,10 @@ html {
 body {
     font-size: 16px;
     font-family: var(--p);
+    /* Con esto mantendremos el footer siempre en la parte inferior de la patnalla */
+    display: grid;
+    min-height: 100dvh;
+    grid-template-rows: auto 1fr auto;
 }
 
 h1 {
