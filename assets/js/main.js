@@ -2,7 +2,7 @@
  * @function departamentSelection() recoge el valor del select con name departament y llamara 
  * a la @function clear() y dependiendo del valor llamara a la @function departamentWeb() o a la
  * @function departamentDelivery()
- */
+ *
 
 function departamentSelection() {
     var departament = document.querySelector('select[name=departament]').value;
@@ -22,10 +22,9 @@ function departamentSelection() {
     }
 }
 
-
 /**
  * @function clear() elimina el contendio de div con clase content
- */
+ *
 function clear() {
     document.querySelector('.content').innerHTML = '';
 }
@@ -34,7 +33,7 @@ function clear() {
  * @function loadDepartmentContent carga el contenido de una página HTML y lo añade a un div con el ID especificado
  * @param {string} pageName - El nombre de la página HTML a cargar (por ejemplo, 'web.html' o 'delivery.html').
  * @param {string} divId - El ID del div donde se añadirá el contenido.
- */
+ *
 function chooseDepartament(pageName, divId) {
     var newDiv = document.createElement('div');
     newDiv.id = divId;
@@ -59,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /**
  * Esocogemos que opción queremos que nos salga por pantalla
-*/
+*
 var departament = document.querySelector('select[name="departament"]');
 departament.addEventListener('change', function () {
     var departamentValue = departament.value;
@@ -84,6 +83,31 @@ departament.addEventListener('change', function () {
     } else {
         alert('No hay valor');
     }
+});*/
+
+
+/**
+ * Esocogemos que opción queremos que nos salga por pantalla
+*/
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(() => {
+        var selectOptions = document.querySelectorAll(`[data-select=web]`);
+        selectOptions.forEach(function (selectOption) {
+            selectOption.addEventListener('change', function () {
+                document.querySelector('.introduction').classList.add('d-none')
+                var elements = document.querySelectorAll(`[data-department=web]`)
+                elements.forEach(function (e) {
+                    if (!e.classList.contains('d-none')) {
+                        e.classList.add('d-none')
+                    }
+                });
+                var optionChoose = selectOption.value;
+                var dataChoose = document.querySelector(`[data-option=${optionChoose}]`)
+                dataChoose.classList.remove('d-none');
+            });
+        });
+    }, 100);
+
 });
 
 /**
