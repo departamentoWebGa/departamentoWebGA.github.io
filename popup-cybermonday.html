@@ -87,41 +87,35 @@
 <body>
 
     <script>
-        let text_popup_btn_confirmado, text_popup_btn_error;
-
-        // Crear el popup dinámicamente con JavaScript
         function createPopup() {
             var idioma = document.querySelector('html').lang;
-            let title_popup, text_popup, text_popup_btn;
+            let title_popup, text_popup, text_popup_btn, text_popup_confirm_msg;
 
+            // Configuración del idioma
             switch (idioma) {
                 case 'en':
                     title_popup = 'Cyber Monday savings starts now!';
                     text_popup = 'Use code <strong>CYBER243927</strong> and save 20%!';
                     text_popup_btn = 'Copy code';
-                    text_popup_btn_confirmado = 'Code copied';
-                    text_popup_btn_error = 'Error copying code';
+                    text_popup_confirm_msg = 'Use your code when registering for the course.';
                     break;
                 case 'es':
                     title_popup = '¡Comienza el Cyber Monday!';
-                    text_popup = 'Usa el código <strong>CYBER243927</strong> y consigue un 20% de beneficio';
+                    text_popup = 'Usa el código <strong>CYBER243927</strong> y consigue un 20% de beneficio.';
                     text_popup_btn = 'Copiar el código';
-                    text_popup_btn_confirmado = 'Código copiado';
-                    text_popup_btn_error = 'Error al copiar el código';
+                    text_popup_confirm_msg = 'Utiliza tu código cuando vayas a registrarte en el curso.';
                     break;
                 case 'pt':
                     title_popup = 'Começou o Cyber Monday!';
                     text_popup = 'Use o código <strong>CYBER243927</strong> e aproveite um bônus de 20%.';
                     text_popup_btn = 'Copiar o código';
-                    text_popup_btn_confirmado = 'Código copiado';
-                    text_popup_btn_error = 'Erro ao copiar o código';
+                    text_popup_confirm_msg = 'Utilize seu código ao se registrar no curso.';
                     break;
                 default:
                     title_popup = 'Cyber Monday savings starts now!';
                     text_popup = 'Use code <strong>CYBER243927</strong> and save 20%!';
                     text_popup_btn = 'Copy code';
-                    text_popup_btn_confirmado = 'Code copied';
-                    text_popup_btn_error = 'Error copying code';
+                    text_popup_confirm_msg = 'Use your code when registering for the course.';
                     break;
             }
 
@@ -152,17 +146,24 @@
             const text = document.createElement('p');
             text.innerHTML = text_popup;
 
-            // Botón principal para copiar
+            // Mensaje de confirmación (oculto inicialmente)
+            const confirmMessage = document.createElement('p');
+            confirmMessage.className = 'confirm-msg';
+            confirmMessage.style.display = 'none';
+            confirmMessage.textContent = text_popup_confirm_msg;
+
+            // Botón para copiar
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-btn';
             copyBtn.textContent = text_popup_btn;
-            copyBtn.onclick = copyPopup;
+            copyBtn.onclick = () => copyPopup(copyBtn, confirmMessage);
 
             // Agregar elementos al contenedor del popup
             content.appendChild(closeX);
             content.appendChild(title);
             content.appendChild(text);
             content.appendChild(copyBtn);
+            content.appendChild(confirmMessage);
 
             // Agregar el contenido al overlay
             overlay.appendChild(content);
@@ -173,7 +174,7 @@
             // Agregar el contenedor base al body
             document.body.appendChild(container);
 
-            // Mostrar el popup después de 15 segundos
+            // Mostrar el popup después de 3 segundos
             setTimeout(() => {
                 overlay.style.display = 'block';
             }, 3000);
@@ -187,16 +188,21 @@
             }
         }
 
-        // Función para copiar el código
-        function copyPopup() {
+        function copyPopup(copyBtn, confirmMessage) {
             const code = 'CYBER243927';
             navigator.clipboard.writeText(code)
-                .then(() => alert(text_popup_btn_confirmado), closePopup())
-                .catch(() => alert(text_popup_btn_error), closePopup());
+                .then(() => {
+                    copyBtn.style.display = 'none'; // Ocultar el botón
+                    confirmMessage.style.display = 'block'; // Mostrar el mensaje de confirmación
+                })
+                .catch(() => {
+                    alert('Error copying code');
+                });
         }
 
         // Llamar a la función para crear el popup
         createPopup();
+
     </script>
 </body>
 
