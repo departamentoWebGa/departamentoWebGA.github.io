@@ -62,7 +62,14 @@
         .popup-content p {
             margin: 10px 0;
             font-size: 16px;
-            color: #555;
+            color: #000;
+        }
+
+        .popup-content .text-valid {
+            margin: 10px 0;
+            font-size: 0.75rem;
+            color: #000;
+            text-align: start;
         }
 
         /* Botón principal de copiar */
@@ -95,25 +102,29 @@
             switch (idioma) {
                 case 'en':
                     title_popup = 'Cyber Monday savings starts now!';
-                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%!';
+                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%! *';
+                    text_popup_valid = '*Valid until December 2';
                     text_popup_btn = 'Copy code';
                     text_popup_confirm_msg = 'Use your code when registering for the course.';
                     break;
                 case 'es':
                     title_popup = '¡Comienza el Cyber Monday!';
-                    text_popup = 'Usa el código <strong>CYBER243927</strong> y consigue un 20% de beneficio.';
+                    text_popup = 'Usa el código <strong>CYBER243927</strong> y consigue un 20% de beneficio. *';
+                    text_popup_valid = '*Válido hasta el 2 de diciembre.';
                     text_popup_btn = 'Copiar el código';
                     text_popup_confirm_msg = 'Utiliza tu código cuando vayas a registrarte en el curso.';
                     break;
                 case 'pt':
                     title_popup = 'Começou o Cyber Monday!';
-                    text_popup = 'Use o código <strong>CYBER243927</strong> e aproveite um bônus de 20%.';
+                    text_popup = 'Use o código <strong>CYBER243927</strong> e aproveite um bônus de 20%. *';
+                    text_popup_valid = '*Válido até 2 de dezembro.';
                     text_popup_btn = 'Copiar o código';
                     text_popup_confirm_msg = 'Utilize seu código ao se registrar no curso.';
                     break;
                 default:
                     title_popup = 'Cyber Monday savings starts now!';
-                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%!';
+                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%! *';
+                    text_popup_valid = '*Valid until December 2';
                     text_popup_btn = 'Copy code';
                     text_popup_confirm_msg = 'Use your code when registering for the course.';
                     break;
@@ -158,12 +169,18 @@
             copyBtn.textContent = text_popup_btn;
             copyBtn.onclick = () => copyPopup(copyBtn, confirmMessage);
 
+            // Texto del popup
+            const text_valid = document.createElement('p');
+            text_valid.className = 'text-valid';
+            text_valid.innerHTML = text_popup_valid;
+
             // Agregar elementos al contenedor del popup
             content.appendChild(closeX);
             content.appendChild(title);
             content.appendChild(text);
             content.appendChild(copyBtn);
             content.appendChild(confirmMessage);
+            content.appendChild(text_valid);
 
             // Agregar el contenido al overlay
             overlay.appendChild(content);
