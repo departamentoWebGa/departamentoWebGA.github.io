@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Cyber Monday</title>
+    <style>
+        /* Fondo del popup */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        /* Contenedor del popup */
+        .popup-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 1001;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        /* Botón "X" de cerrar */
+        .close-x {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000000;
+            cursor: pointer;
+        }
+
+        .close-x:hover {
+            color: #A31F34;
+        }
+
+        /* Título del popup */
+        .popup-content h2 {
+            margin: 0 0 10px;
+            color: #000000;
+        }
+
+        /* Texto del popup */
+        .popup-content p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Botón principal de copiar */
+        .copy-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #A31F34;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .copy-btn:hover {
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        let text_popup_btn_confirmado, text_popup_btn_error;
+
+        // Crear el popup dinámicamente con JavaScript
+        function createPopup() {
+            var idioma = document.querySelector('html').lang;
+            let title_popup, text_popup, text_popup_btn;
+
+            switch (idioma) {
+                case 'en':
+                    title_popup = 'Cyber Monday savings starts now!';
+                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%!';
+                    text_popup_btn = 'Copy code';
+                    text_popup_btn_confirmado = 'Code copied';
+                    text_popup_btn_error = 'Error copying code';
+                    break;
+                case 'es':
+                    title_popup = '¡Comienza el Cyber Monday!';
+                    text_popup = 'Usa el código <strong>CYBER243927</strong> y consigue un 20% de beneficio';
+                    text_popup_btn = 'Copiar el código';
+                    text_popup_btn_confirmado = 'Código copiado';
+                    text_popup_btn_error = 'Error al copiar el código';
+                    break;
+                case 'pt':
+                    title_popup = 'Começou o Cyber Monday!';
+                    text_popup = 'Use o código <strong>CYBER243927</strong> e aproveite um bônus de 20%.';
+                    text_popup_btn = 'Copiar o código';
+                    text_popup_btn_confirmado = 'Código copiado';
+                    text_popup_btn_error = 'Erro ao copiar o código';
+                    break;
+                default:
+                    title_popup = 'Cyber Monday savings starts now!';
+                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%!';
+                    text_popup_btn = 'Copy code';
+                    text_popup_btn_confirmado = 'Code copied';
+                    text_popup_btn_error = 'Error copying code';
+                    break;
+            }
+
+            // Crear el contenedor base
+            const container = document.createElement('div');
+            container.id = 'popup-container';
+
+            // Crear overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'popup-overlay';
+            overlay.id = 'popup';
+
+            // Crear contenido del popup
+            const content = document.createElement('div');
+            content.className = 'popup-content';
+
+            // Botón "X" de cerrar
+            const closeX = document.createElement('button');
+            closeX.className = 'close-x';
+            closeX.innerHTML = '×';
+            closeX.onclick = closePopup;
+
+            // Título
+            const title = document.createElement('h2');
+            title.textContent = title_popup;
+
+            // Texto del popup
+            const text = document.createElement('p');
+            text.innerHTML = text_popup;
+
+            // Botón principal para copiar
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.textContent = text_popup_btn;
+            copyBtn.onclick = copyPopup;
+
+            // Agregar elementos al contenedor del popup
+            content.appendChild(closeX);
+            content.appendChild(title);
+            content.appendChild(text);
+            content.appendChild(copyBtn);
+
+            // Agregar el contenido al overlay
+            overlay.appendChild(content);
+
+            // Agregar el overlay al contenedor base
+            container.appendChild(overlay);
+
+            // Agregar el contenedor base al body
+            document.body.appendChild(container);
+
+            // Mostrar el popup después de 15 segundos
+            setTimeout(() => {
+                overlay.style.display = 'block';
+            }, 15000);
+        }
+
+        // Función para cerrar el popup
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            if (popup) {
+                popup.style.display = 'none';
+            }
+        }
+
+        // Función para copiar el código
+        function copyPopup() {
+            const code = 'CYBER243927';
+            navigator.clipboard.writeText(code)
+                .then(() => alert(text_popup_btn_confirmado), closePopup())
+                .catch(() => alert(text_popup_btn_error), closePopup());
+        }
+
+        // Llamar a la función para crear el popup
+        createPopup();
+    </script>
+</body>
+
+</html>
