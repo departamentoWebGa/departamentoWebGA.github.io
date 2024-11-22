@@ -94,131 +94,149 @@
 <body>
 
     <script>
-        function createPopup() {
-            var idioma = document.querySelector('html').lang;
-            let title_popup, text_popup, text_popup_btn, text_popup_confirm_msg;
 
-            // Configuración del idioma
-            switch (idioma) {
-                case 'en':
-                    title_popup = 'Cyber Monday savings starts now!';
-                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%! *';
-                    text_popup_valid = '*Valid until December 2';
-                    text_popup_btn = 'Copy code';
-                    text_popup_confirm_msg = 'Use your code when registering for the course.';
-                    break;
-                case 'es':
-                    title_popup = '¡Comienza el Cyber Monday!';
-                    text_popup = 'Usa el código <strong>CYBER243927</strong> y consigue un 20% de beneficio. *';
-                    text_popup_valid = '*Válido hasta el 2 de diciembre.';
-                    text_popup_btn = 'Copiar el código';
-                    text_popup_confirm_msg = 'Utiliza tu código cuando vayas a registrarte en el curso.';
-                    break;
-                case 'pt':
-                    title_popup = 'Começou o Cyber Monday!';
-                    text_popup = 'Use o código <strong>CYBER243927</strong> e aproveite um bônus de 20%. *';
-                    text_popup_valid = '*Válido até 2 de dezembro.';
-                    text_popup_btn = 'Copiar o código';
-                    text_popup_confirm_msg = 'Utilize seu código ao se registrar no curso.';
-                    break;
-                default:
-                    title_popup = 'Cyber Monday savings starts now!';
-                    text_popup = 'Use code <strong>CYBER243927</strong> and save 20%! *';
-                    text_popup_valid = '*Valid until December 2';
-                    text_popup_btn = 'Copy code';
-                    text_popup_confirm_msg = 'Use your code when registering for the course.';
-                    break;
+
+        // Configurar la fecha y hora objetivo
+        const targetDate = new Date('2024-12-02T23:59:59'); // Fecha y hora límite para el popup (Cyber Monday).
+
+        // Función para verificar si es la hora de mostrar la alerta
+        function checkAlertTime() {
+            const now = new Date(); // Obtiene la fecha y hora actual.
+            if (now <= targetDate) { // Verifica si la fecha actual está dentro del rango válido.
+
+                // Función para crear el popup dinámicamente
+                function createPopup() {
+                    var idioma = document.querySelector('html').lang; // Obtiene el idioma del atributo "lang" en la etiqueta <html>.
+                    let title_popup, text_popup, text_popup_btn, text_popup_valid, text_popup_confirm_msg;
+
+                    // Configuración del idioma
+                    switch (idioma) {
+                        case 'en': // Inglés
+                            title_popup = 'Cyber Monday savings starts now!';
+                            text_popup = 'Use code <strong>CYBER243927</strong> and save 20%! *';
+                            text_popup_valid = '*Valid until December 2';
+                            text_popup_btn = 'Copy code';
+                            text_popup_confirm_msg = 'Use your code when registering for the course.';
+                            break;
+                        case 'es': // Español
+                            title_popup = '¡Comienza el Cyber Monday!';
+                            text_popup = 'Usa el código <strong>CYBER243927</strong> y consigue un 20% de beneficio. *';
+                            text_popup_valid = '*Válido hasta el 2 de diciembre.';
+                            text_popup_btn = 'Copiar el código';
+                            text_popup_confirm_msg = 'Utiliza tu código cuando vayas a registrarte en el curso.';
+                            break;
+                        case 'pt': // Portugués
+                            title_popup = 'Começou o Cyber Monday!';
+                            text_popup = 'Use o código <strong>CYBER243927</strong> e aproveite um bônus de 20%. *';
+                            text_popup_valid = '*Válido até 2 de dezembro.';
+                            text_popup_btn = 'Copiar o código';
+                            text_popup_confirm_msg = 'Utilize seu código ao se registrar no curso.';
+                            break;
+                        default: // Idioma por defecto: Inglés
+                            title_popup = 'Cyber Monday savings starts now!';
+                            text_popup = 'Use code <strong>CYBER243927</strong> and save 20%! *';
+                            text_popup_valid = '*Valid until December 2';
+                            text_popup_btn = 'Copy code';
+                            text_popup_confirm_msg = 'Use your code when registering for the course.';
+                            break;
+                    }
+
+                    // Crear el contenedor principal para el popup
+                    const container = document.createElement('div');
+                    container.id = 'popup-container'; // Asignar un ID único al contenedor.
+
+                    // Crear el fondo semi-transparente (overlay)
+                    const overlay = document.createElement('div');
+                    overlay.className = 'popup-overlay'; // Clase para estilos del overlay.
+                    overlay.id = 'popup';
+
+                    // Crear el contenido del popup
+                    const content = document.createElement('div');
+                    content.className = 'popup-content'; // Clase para estilos del contenido.
+
+                    // Botón "X" para cerrar el popup
+                    const closeX = document.createElement('button');
+                    closeX.className = 'close-x'; // Clase para estilos del botón.
+                    closeX.innerHTML = '×'; // Símbolo de cierre.
+                    closeX.onclick = closePopup; // Asigna la función para cerrar el popup al hacer clic.
+
+                    // Título del popup
+                    const title = document.createElement('h2');
+                    title.textContent = title_popup; // Asigna el título según el idioma configurado.
+
+                    // Texto principal del popup
+                    const text = document.createElement('p');
+                    text.innerHTML = text_popup; // Asigna el texto principal según el idioma.
+
+                    // Mensaje de confirmación (inicialmente oculto)
+                    const confirmMessage = document.createElement('p');
+                    confirmMessage.className = 'confirm-msg'; // Clase para estilos del mensaje.
+                    confirmMessage.style.display = 'none'; // Oculta el mensaje inicialmente.
+                    confirmMessage.textContent = text_popup_confirm_msg; // Texto del mensaje según el idioma.
+
+                    // Botón para copiar el código
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn'; // Clase para estilos del botón.
+                    copyBtn.textContent = text_popup_btn; // Texto del botón según el idioma.
+                    copyBtn.onclick = () => copyPopup(copyBtn, confirmMessage); // Asigna la función para copiar el código.
+
+                    // Texto adicional indicando la validez del código
+                    const text_valid = document.createElement('p');
+                    text_valid.className = 'text-valid'; // Clase para estilos del texto.
+                    text_valid.innerHTML = text_popup_valid; // Texto de validez según el idioma.
+
+                    // Agregar los elementos al contenido del popup
+                    content.appendChild(closeX); // Botón de cierre.
+                    content.appendChild(title); // Título.
+                    content.appendChild(text); // Texto principal.
+                    content.appendChild(copyBtn); // Botón de copiado.
+                    content.appendChild(confirmMessage); // Mensaje de confirmación.
+                    content.appendChild(text_valid); // Texto de validez.
+
+                    // Agregar el contenido al overlay
+                    overlay.appendChild(content);
+
+                    // Agregar el overlay al contenedor principal
+                    container.appendChild(overlay);
+
+                    // Agregar el contenedor principal al body
+                    document.body.appendChild(container);
+
+                    // Mostrar el popup después de 3 segundos
+                    setTimeout(() => {
+                        overlay.style.display = 'block'; // Hace visible el overlay.
+                    }, 3000);
+                }
+
+                // Función para cerrar el popup
+                function closePopup() {
+                    const popup = document.getElementById('popup'); // Obtiene el popup por su ID.
+                    if (popup) {
+                        popup.style.display = 'none'; // Oculta el popup.
+                    }
+                }
+
+                // Función para copiar el código al portapapeles
+                function copyPopup(copyBtn, confirmMessage) {
+                    const code = 'CYBER243927'; // Código a copiar.
+                    navigator.clipboard.writeText(code) // Usa la API para copiar al portapapeles.
+                        .then(() => {
+                            copyBtn.style.display = 'none'; // Oculta el botón después de copiar.
+                            confirmMessage.style.display = 'block'; // Muestra el mensaje de confirmación.
+                        })
+                        .catch(() => {
+                            alert('Error copying code'); // Mensaje en caso de error.
+                        });
+                }
+
+                // Llamar a la función para crear el popup
+                createPopup();
+                clearInterval(interval); // Detener el intervalo después de mostrar la alerta.
             }
-
-            // Crear el contenedor base
-            const container = document.createElement('div');
-            container.id = 'popup-container';
-
-            // Crear overlay
-            const overlay = document.createElement('div');
-            overlay.className = 'popup-overlay';
-            overlay.id = 'popup';
-
-            // Crear contenido del popup
-            const content = document.createElement('div');
-            content.className = 'popup-content';
-
-            // Botón "X" de cerrar
-            const closeX = document.createElement('button');
-            closeX.className = 'close-x';
-            closeX.innerHTML = '×';
-            closeX.onclick = closePopup;
-
-            // Título
-            const title = document.createElement('h2');
-            title.textContent = title_popup;
-
-            // Texto del popup
-            const text = document.createElement('p');
-            text.innerHTML = text_popup;
-
-            // Mensaje de confirmación (oculto inicialmente)
-            const confirmMessage = document.createElement('p');
-            confirmMessage.className = 'confirm-msg';
-            confirmMessage.style.display = 'none';
-            confirmMessage.textContent = text_popup_confirm_msg;
-
-            // Botón para copiar
-            const copyBtn = document.createElement('button');
-            copyBtn.className = 'copy-btn';
-            copyBtn.textContent = text_popup_btn;
-            copyBtn.onclick = () => copyPopup(copyBtn, confirmMessage);
-
-            // Texto del popup
-            const text_valid = document.createElement('p');
-            text_valid.className = 'text-valid';
-            text_valid.innerHTML = text_popup_valid;
-
-            // Agregar elementos al contenedor del popup
-            content.appendChild(closeX);
-            content.appendChild(title);
-            content.appendChild(text);
-            content.appendChild(copyBtn);
-            content.appendChild(confirmMessage);
-            content.appendChild(text_valid);
-
-            // Agregar el contenido al overlay
-            overlay.appendChild(content);
-
-            // Agregar el overlay al contenedor base
-            container.appendChild(overlay);
-
-            // Agregar el contenedor base al body
-            document.body.appendChild(container);
-
-            // Mostrar el popup después de 3 segundos
-            setTimeout(() => {
-                overlay.style.display = 'block';
-            }, 3000);
         }
 
-        // Función para cerrar el popup
-        function closePopup() {
-            const popup = document.getElementById('popup');
-            if (popup) {
-                popup.style.display = 'none';
-            }
-        }
-
-        function copyPopup(copyBtn, confirmMessage) {
-            const code = 'CYBER243927';
-            navigator.clipboard.writeText(code)
-                .then(() => {
-                    copyBtn.style.display = 'none'; // Ocultar el botón
-                    confirmMessage.style.display = 'block'; // Mostrar el mensaje de confirmación
-                })
-                .catch(() => {
-                    alert('Error copying code');
-                });
-        }
-
-        // Llamar a la función para crear el popup
-        createPopup();
+        // Verificar cada segundo si es el momento de la alerta
+        const interval = setInterval(checkAlertTime, 1000); // Revisa cada segundo si es hora de mostrar el popup.
 
     </script>
 </body>
